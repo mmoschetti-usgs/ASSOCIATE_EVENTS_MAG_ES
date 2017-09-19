@@ -8,6 +8,7 @@
 
 /* Calculate distance and azimuth/back-azimuth between two (lon,lat) coordinates 
  * using delaz.f subroutine
+ * Shoeball and Ellsworth locations
  */
 
 // function declaration
@@ -79,7 +80,7 @@ int main (int argc, char *argv[])
 /* CHECK INPUT ARGUMENTS */
   if ( argc != 4 ) {
     fprintf(stderr,"USAGE: %s [events from flatfile] [catalog file] [output file]\n", argv[0]);
-    fprintf(stderr,"(e.g., %s Event_list_associate_nshm_catalog_magnitude.csv emm_c2_OK_KS_201702_mod2.csv Event_list_associate_nshm_catalog_magnitude_Mod.csv\n", argv[0]);
+    fprintf(stderr,"(e.g., %s Events_complete_20170915.csv emm_c2_OK_KS_201702_wyeck_8_29_2017.csv Event_complete_associate_mag_ES.csv\n", argv[0]);
     exit(1);
   }
   sscanf(argv[1],"%s", eventFlatFile);
