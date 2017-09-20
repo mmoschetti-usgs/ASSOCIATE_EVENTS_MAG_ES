@@ -26,13 +26,13 @@ void assign_cols_flatfile(char **columns, float *evMag, int *evYear, int *evMon,
 /*--------------------------------------------------------------------------*/
 {
 //
-  *evMag=atof(columns[6]);
-  *evYear=atoi(columns[0]);
-  *evMon=atoi(columns[1]);
-  *evDay=atoi(columns[2]);
-  *evHour=atoi(columns[3]);
-  *evMin=atoi(columns[4]);
-  *evSec=atof(columns[5]);
+  *evMag=atof(columns[20]);
+  *evYear=atoi(columns[14]);
+  *evMon=atoi(columns[15]);
+  *evDay=atoi(columns[16]);
+  *evHour=atoi(columns[17]);
+  *evMin=atoi(columns[18]);
+  *evSec=atof(columns[19]);
 //  fprintf(stderr,"assign_cols_flatfile, year/month/day/hour/min/sec/Mag: %d %d %d %d %d %.2f %f\n", *evYear, *evMon, *evDay, *evHour, *evMin, *evSec, *evMag);
 
 }
@@ -49,7 +49,7 @@ void assign_cols_catalog(char **columns, float *evMag, int *evYear, int *evMon, 
   *evHour=atoi(columns[7]);
   *evMin=atoi(columns[8]);
   *evSec=atof(columns[9]);
-  *evMagSource=atof(columns[15]);
+  *evMagSource=atof(columns[13]);
   magString=strcpy(magString,columns[13]);
 //  fprintf(stderr,"assign_cols_catalog, year/month/day/hour/min/sec/Mag/MagSource/MagString: %d %d %d %d %d %.2f %f %f %s\n", *evYear, *evMon, *evDay, *evHour, *evMin, *evSec, *evMag, *evMagSource, magString);
 
@@ -103,6 +103,18 @@ int main (int argc, char *argv[])
   hlines=2;
   for (cnt1=0; cnt1<hlines; cnt1++) {
     fgets(buff,BUFFLEN,fp_eventFlatFile);
+    buff[strcspn(buff, "\r\n")] = 0;
+    if ( cnt1 == 0) {
+      fprintf(fp_outputFile,"%s\n",buff);
+    }
+    else {
+      fprintf(fp_outputFile,"%s,",buff);
+    }
+  }
+// header from catalog file, ES
+  hlines=1;
+  for (cnt1=0; cnt1<hlines; cnt1++) {
+    fgets(buff,BUFFLEN,fp_catalogFile);
     fprintf(fp_outputFile,"%s",buff);
   }
   cnt1=0;
@@ -134,7 +146,10 @@ int main (int argc, char *argv[])
         fprintf(stderr,"dM=%.1f, dTime=%d\n",diffMag, diffSec);
         fprintf(stderr,"%s\n", buff); 
         fprintf(stderr,"%s\n\n", buff2); 
-        fprintf(fp_outputFile,"%s,%.1f,%s\n",buff,evMagSource,magString);
+//        fprintf(fp_outputFile,"%s,%.1f,%s\n",buff,evMagSource,magString);
+        fprintf(fp_outputFile,"%s,%s\n",buff,buff2);
+        fprintf(stderr,"%s,%s\n",buff,buff2);
+//        fprintf(stderr,"%s,%.1f,%s\n",buff,evMagSource,magString);
         break;
       }
     }
